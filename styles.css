@@ -1,0 +1,302 @@
+/* ==========================================================
+   styles.css — shared by every page of Joselyn's site
+   Order: tokens → base → layout → components → page parts
+   ========================================================== */
+
+/* ---------- 1. Design tokens (change colors and sizes here) ---------- */
+:root {
+  --ground: #FFFFFF;     /* page background: white paper */
+  --ink: #0F2341;        /* main text: deep navy */
+  --accent: #1F4E8C;     /* links, buttons, the forecast line */
+  --surface: #F2F4F7;    /* light gray panels */
+  --muted: #5B6573;      /* secondary text (passes 4.5:1 on white) */
+  --rule: #D5DAE1;       /* thin ledger lines */
+
+  --serif: "Newsreader", Georgia, "Times New Roman", serif;          /* headings */
+  --sans: "Public Sans", "Helvetica Neue", Arial, sans-serif;        /* body and numbers */
+
+  /* Five type sizes, clearly far apart */
+  --s1: 14px;   /* small labels, footer */
+  --s2: 17px;   /* body text */
+  --s3: 22px;   /* sub-headings, line-item titles */
+  --s4: 34px;   /* page headings */
+  --s5: 54px;   /* the name on Home */
+
+  --wrap: 1080px;  /* maximum content width */
+  --gutter: 20px;  /* side padding on phones */
+}
+
+/* ---------- 2. Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }   /* sizes include padding */
+
+html { -webkit-text-size-adjust: 100%; }             /* stop iPhone from enlarging text */
+
+body {
+  margin: 0;                                          /* no default browser margin */
+  background: var(--ground);                          /* white page */
+  color: var(--ink);                                  /* navy text */
+  font-family: var(--sans);                           /* body font */
+  font-size: var(--s2);                               /* body size */
+  line-height: 1.6;                                   /* comfortable reading */
+  font-variant-numeric: tabular-nums;                 /* numbers line up, like a spreadsheet */
+  caret-color: var(--accent);                         /* themed text cursor */
+}
+
+::selection { background: var(--accent); color: #fff; }  /* themed text highlight */
+
+h1, h2, h3 {
+  font-family: var(--serif);   /* serious, trustworthy headings */
+  font-weight: 600;            /* firm but not heavy */
+  line-height: 1.15;           /* tight heading lines */
+  margin: 0 0 0.4em;           /* small gap below */
+}
+
+p { margin: 0 0 1em; max-width: 64ch; }   /* readable line length */
+
+a {
+  color: var(--accent);             /* navy links */
+  text-underline-offset: 3px;       /* underline sits clear of the letters */
+  text-decoration-thickness: 1px;   /* fine underline */
+}
+a:hover { color: var(--ink); }      /* darker on hover */
+
+/* Visible keyboard focus everywhere (never removed) */
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* Screen-reader-only helper */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;   /* tiny */
+  overflow: hidden; clip: rect(0 0 0 0);          /* hidden visually, still read aloud */
+  white-space: nowrap;
+}
+
+/* Every placeholder is tinted so Joselyn can spot it on the page too */
+.placeholder { color: var(--muted); font-style: italic; }
+
+/* ---------- 3. Layout ---------- */
+.wrap {
+  max-width: var(--wrap);            /* keep lines from getting too long */
+  margin: 0 auto;                    /* center the column */
+  padding: 0 var(--gutter);          /* side breathing room */
+}
+
+/* Header: name on the left, menu on the right */
+.site-header { border-bottom: 1px solid var(--rule); }   /* one ledger line under the header */
+.site-header .wrap {
+  display: flex;                    /* name and menu in a row */
+  flex-wrap: wrap;                  /* menu drops below on narrow phones */
+  align-items: center;              /* vertically centered */
+  justify-content: space-between;   /* push apart */
+  gap: 8px 24px;                    /* space when wrapped */
+  padding-top: 14px; padding-bottom: 14px;
+}
+.brand {
+  font-family: var(--serif);        /* name in the heading face */
+  font-size: var(--s3);             /* clear but not loud */
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;            /* it's a home link, not body text */
+}
+.site-nav ul {
+  list-style: none;                 /* no bullets */
+  margin: 0; padding: 0;
+  display: flex; flex-wrap: wrap;   /* menu items in a row, wrapping if needed */
+  gap: 4px 2px;
+}
+.site-nav a {
+  display: inline-block;            /* gives it a real touch target */
+  padding: 10px 7px;                /* at least 44px tall with line-height; narrow sides so all five fit on a phone */
+  font-size: var(--s1);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;   /* reserved space for the active marker */
+}
+.site-nav a:hover { color: var(--accent); }
+.site-nav a[aria-current="page"] { border-bottom-color: var(--accent); }  /* shows which page you're on */
+
+main { padding: 48px 0 72px; }   /* space above and below page content */
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--rule);   /* closing ledger line */
+  color: var(--muted);
+  font-size: var(--s1);
+  padding: 24px 0 40px;
+}
+.site-footer p { margin: 0 0 4px; max-width: none; }
+
+/* ---------- 4. Components ---------- */
+
+/* Page heading block */
+.page-title { font-size: var(--s4); }
+.lead { font-size: var(--s3); line-height: 1.4; color: var(--ink); max-width: 34ch; font-family: var(--serif); font-weight: 400; }
+
+/* Buttons: fully square, on purpose */
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.btn {
+  display: inline-block;
+  padding: 12px 22px;                  /* 44px+ tall */
+  font-weight: 600;
+  font-size: var(--s1);
+  text-decoration: none;
+  border: 2px solid var(--accent);
+  background: var(--accent);           /* solid navy */
+  color: #fff;
+  transition: background-color .15s ease, color .15s ease;  /* only color changes */
+}
+.btn:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
+.btn.secondary { background: transparent; color: var(--accent); }   /* outlined version */
+.btn.secondary:hover { background: var(--surface); color: var(--ink); }
+
+/* Ledger: rows separated by thin rules, like a budget sheet */
+.ledger { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--ink); }  /* heavy top rule like a statement */
+.ledger > li {
+  display: grid;
+  grid-template-columns: 1fr;          /* phone: one column */
+  gap: 2px 32px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.ledger .item-title { font-family: var(--serif); font-size: var(--s3); font-weight: 600; margin: 0; }
+.ledger .item-meta { color: var(--muted); font-size: var(--s1); margin: 0; }   /* dates and places */
+.ledger .item-body { margin: 6px 0 0; }
+
+@media (min-width: 768px) {
+  .ledger > li { grid-template-columns: 220px 1fr; }   /* desktop: label column + detail column */
+  .ledger .item-meta { padding-top: 6px; }              /* line up with the title baseline */
+}
+
+/* Section headings inside a page */
+.section { margin-top: 56px; }
+.section h2 { font-size: var(--s3); }
+
+/* Gray panel */
+.panel { background: var(--surface); padding: 24px; }
+
+/* ---------- 5. Home page ---------- */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr;          /* phone: stacked */
+  gap: 32px;
+  align-items: center;
+}
+.hero h1 { font-size: 40px; }           /* phone: smaller than desktop so the name fits */
+@media (min-width: 768px) {
+  .hero { grid-template-columns: 1.4fr 1fr; }   /* desktop: text left, photo right */
+  .hero h1 { font-size: var(--s5); }
+}
+
+/* Photo, or its placeholder */
+.photo {
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 4 / 5;                  /* portrait frame */
+  justify-self: start;
+  object-fit: cover;
+}
+@media (min-width: 768px) { .photo { justify-self: end; } }
+.photo-placeholder {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  color: var(--muted);
+  text-align: center;
+  padding: 16px;
+}
+.photo-placeholder .initials {
+  font-family: var(--serif);
+  font-size: var(--s5);
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.photo-placeholder p { font-size: var(--s1); margin: 0; }
+
+/* ---- The path chart: actuals (solid) → forecast (dashed) ---- */
+.path { margin-top: 64px; }
+.path h2 { font-size: var(--s3); }
+.path .key { color: var(--muted); font-size: var(--s1); display: flex; flex-wrap: wrap; gap: 6px 20px; margin-bottom: 8px; }
+.path .key span::before {                /* little line sample in the key */
+  content: ""; display: inline-block;
+  width: 28px; height: 0; vertical-align: middle; margin-right: 8px;
+  border-top: 3px solid var(--ink);
+}
+.path .key .fc::before { border-top: 3px dashed var(--accent); }
+
+.milestones {
+  list-style: none; margin: 0; padding: 0;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;           /* phone: a vertical line */
+}
+/* Phone: vertical line down the left */
+.milestones > li {
+  position: relative;
+  padding: 0 0 26px 34px;               /* room for the line and the dot */
+}
+.milestones > li::before {               /* the line segment for this step */
+  content: "";
+  position: absolute;
+  left: 7px; top: 8px; bottom: -8px;
+  border-left: 3px solid var(--ink);     /* actuals = solid navy */
+}
+.milestones > li.forecast::before,
+.milestones > li.to-forecast::before { border-left: 3px dashed var(--accent); }  /* forecast = dashed (incl. the step from today into the future) */
+.milestones > li:last-child::before { display: none; }   /* no line after the final goal */
+.milestones .dot {                        /* the point on the line */
+  position: absolute; left: 0; top: 4px;
+  width: 17px; height: 17px;
+  border-radius: 50%;                     /* points are fully round, on purpose */
+  background: var(--ink);
+  border: 3px solid var(--ink);
+}
+.milestones .forecast .dot { background: var(--ground); border-color: var(--accent); }  /* hollow = not yet happened */
+.milestones .when { display: block; font-size: var(--s1); color: var(--muted); font-weight: 600; }
+.milestones .what { display: block; font-family: var(--serif); font-size: var(--s3); font-weight: 600; line-height: 1.25; }
+.milestones .detail { display: block; font-size: var(--s1); color: var(--muted); margin-top: 4px; max-width: 30ch; }
+
+/* Desktop: the same points laid out left-to-right along one line */
+@media (min-width: 900px) {
+  .milestones { grid-template-columns: repeat(5, 1fr); padding-top: 34px; }
+  .milestones > li { padding: 0 16px 0 0; outline-offset: 6px; }
+  .milestones > li::before {               /* horizontal segment to the next point */
+    left: 8px; right: -8px; top: -26px; bottom: auto;
+    border-left: 0;
+    border-top: 3px solid var(--ink);
+    transform-origin: left center;         /* lets the line "draw" from left to right */
+    animation: draw .5s ease-out both;     /* the one load moment */
+  }
+  .milestones > li.forecast::before,
+  .milestones > li.to-forecast::before { border-left: 0; border-top: 3px dashed var(--accent); }
+  .milestones .dot { top: -34px; left: 0; }
+  /* Detail lines appear when you hover or tab to a point */
+  .milestones .detail { opacity: 0; transition: opacity .2s ease; }
+  .milestones > li:hover .detail,
+  .milestones > li:focus .detail,
+  .milestones > li:focus-within .detail { opacity: 1; }
+  /* Each segment starts a little after the one before it */
+  .milestones > li:nth-child(2)::before { animation-delay: .35s; }
+  .milestones > li:nth-child(3)::before { animation-delay: .7s; }
+  .milestones > li:nth-child(4)::before { animation-delay: 1.05s; }
+}
+@keyframes draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* Still version for anyone who has reduced motion turned on */
+@media (prefers-reduced-motion: reduce) {
+  .milestones > li::before { animation: none !important; }
+  .milestones .detail { transition: none; }
+  .btn { transition: none; }
+}
+
+/* ---------- 6. Projects page ---------- */
+.project-links { list-style: none; padding: 0; margin: 14px 0 0; display: flex; flex-wrap: wrap; gap: 8px 22px; }
+.project-links li { font-size: var(--s1); }
+.status { display: inline-block; font-size: var(--s1); font-weight: 600; color: var(--accent); margin-bottom: 6px; }
+
+/* ---------- 7. Contact page ---------- */
+.contact-list dt { font-size: var(--s1); color: var(--muted); font-weight: 600; }
+.contact-list dd { margin: 0 0 22px; font-size: var(--s3); font-family: var(--serif); }
+.contact-list dd .placeholder { font-family: var(--sans); font-size: var(--s2); }
